@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algebra 1 — Chapter 10 Study Guide</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #1a1a18; min-height: 100vh; }
+  .page { max-width: 740px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+  header { margin-bottom: 1.5rem; }
+  header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  header p { font-size: 14px; color: #666; }
+
+  .nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
+  .nav button {
+    font-size: 13px; padding: 7px 15px;
+    border: 1px solid #ccc; border-radius: 20px;
+    background: #fff; color: #555; cursor: pointer;
+    transition: all 0.15s; font-family: inherit;
+  }
+  .nav button:hover { border-color: #1D9E75; color: #1D9E75; }
+  .nav button.active { background: #E1F5EE; border-color: #1D9E75; color: #085041; font-weight: 600; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .card {
+    background: #fff; border: 1px solid #e2e0d8;
+    border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 1rem;
+  }
+  h2 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: #0F6E56; }
+  p { font-size: 14px; line-height: 1.75; margin-bottom: 8px; }
+  p:last-child { margin-bottom: 0; }
+
+  .rule {
+    background: #E6F1FB; border-left: 3px solid #378ADD;
+    padding: 10px 14px; border-radius: 0 8px 8px 0;
+    margin: 10px 0; font-size: 14px; color: #0C447C; line-height: 1.6;
+  }
+  .good {
+    background: #EAF3DE; border-left: 3px solid #639922;
+    padding: 10px 14px; border-radius: 0 8px 8px 0;
+    margin: 10px 0; font-size: 14px; color: #27500A; line-height: 1.6;
+  }
+  .warn {
+    background: #FAEEDA; border-left: 3px solid #EF9F27;
+    padding: 10px 14px; border-radius: 0 8px 8px 0;
+    margin: 10px 0; font-size: 14px; color: #633806; line-height: 1.6;
+  }
+
+  .math-block {
+    font-family: 'Courier New', monospace;
+    background: #f5f5f3; border: 1px solid #e2e0d8;
+    padding: 12px 16px; border-radius: 8px;
+    font-size: 14px; margin: 10px 0; line-height: 2.1;
+    white-space: pre-wrap;
+  }
+  .math {
+    font-family: 'Courier New', monospace;
+    background: #f5f5f3; border: 1px solid #e2e0d8;
+    padding: 2px 7px; border-radius: 5px; font-size: 13px;
+  }
+
+  .steps { margin: 10px 0; }
+  .step { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+  .step-num {
+    background: #1D9E75; color: #fff; border-radius: 50%;
+    width: 24px; height: 24px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; margin-top: 2px;
+  }
+  .step-text { font-size: 14px; line-height: 1.75; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 520px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* Graphing section */
+  .slider-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .slider-group { display: flex; flex-direction: column; gap: 4px; }
+  .slider-group label { font-size: 12px; color: #666; }
+  .slider-group input[type=range] { width: 160px; accent-color: #1D9E75; }
+  .slider-val { font-family: 'Courier New', monospace; font-size: 15px; font-weight: 600; min-width: 28px; color: #0F6E56; }
+
+  canvas { border: 1px solid #e2e0d8; border-radius: 8px; display: block; max-width: 100%; }
+
+  .graph-info { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .info-item { background: #f5f5f3; border-radius: 8px; padding: 10px 14px; }
+  .info-label { font-size: 11px; color: #888; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .info-val { font-size: 15px; font-weight: 600; font-family: 'Courier New', monospace; color: #0F6E56; }
+
+  .topic-badge {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    background: #E1F5EE; color: #085041;
+    padding: 2px 10px; border-radius: 10px; margin-bottom: 10px;
+  }
+
+  strong { font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Algebra 1 — Chapter 10 Study Guide</h1>
+    <p>Tap a topic to review. All examples match your practice test.</p>
+  </header>
+
+  <nav class="nav">
+    <button class="active" onclick="show('radicals', this)">1. Simplifying radicals</button>
+    <button onclick="show('ops', this)">2. Adding &amp; multiplying</button>
+    <button onclick="show('rationalize', this)">3. Rationalizing</button>
+    <button onclick="show('equations', this)">4. Radical equations</button>
+    <button onclick="show('distance', this)">5. Distance formula</button>
+    <button onclick="show('pythagorean', this)">6. Pythagorean theorem</button>
+    <button onclick="show('graphing', this)">7. Graphing √ functions</button>
+  </nav>
+
+  <!-- SECTION 1 -->
+  <div id="radicals" class="section active">
+    <div class="card">
+      <div class="topic-badge">Concept</div>
+      <h2>What does "simplify a radical" mean?</h2>
+      <p>A radical like √48 is simplified when there's no perfect square hiding inside it. The trick is to factor out all perfect squares.</p>
+      <div class="rule">Perfect squares to memorize: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144...</div>
+      <p>For variables: every <strong>pair</strong> of the same variable comes out of the radical as one copy. Odd powers leave one behind inside.</p>
+      <div class="rule">√(x⁶) = x³ &nbsp;&nbsp; √(x⁵) = x²√x &nbsp;&nbsp; √(x⁸) = x⁴</div>
+    </div>
+    <div class="card">
+      <div class="topic-badge">Worked example — Problem 1</div>
+      <h2>Simplify 3√(24x³)</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-text">Factor the number into perfect square × leftover: <span class="math">24 = 4 · 6</span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text">Factor the variable into a perfect square × leftover: <span class="math">x³ = x² · x</span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text">Take the square root of each perfect square part: <span class="math">√4 = 2</span> and <span class="math">√x² = x</span></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-text">Multiply everything that came out by the original coefficient (3):
+          <div class="math-block">3 · √(4 · 6 · x² · x)
+= 3 · 2 · x · √(6x)
+= 6x√(6x)  ✓</div>
+        </div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="topic-badge">Worked example — Problem 2</div>
+      <h2>Simplify √(32a⁶b³)</h2>
+      <div class="math-block">32 = 16 · 2  →  √16 = 4
+a⁶ = (a³)²  →  √(a⁶) = a³
+b³ = b² · b  →  √(b²) = b, one b stays inside
+
+= 4a³b · √(2b)  ✓</div>
+      <div class="good">Quick check: whatever is left inside the √ should have no perfect square factors, and no variable with an exponent ≥ 2.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div id="ops" class="section">
+    <div class="card">
+      <div class="topic-badge">Concept</div>
+      <h2>Adding and subtracting radicals</h2>
+      <p>Radicals behave exactly like variables — you can only add or subtract them if the part <strong>under the √ is identical</strong>.</p>
+      <div class="rule">Think of √2 like a variable "w".<br>3√2 + 5√2 = 8√2 &nbsp; just like &nbsp; 3w + 5w = 8w.</div>
+      <p>Always simplify each radical first, then look for matching terms.</p>
+    </div>
+    <div class="card">
+      <div class="topic-badge">Worked example — Problem 4</div>
+      <h2>Simplify −2√32 + √72 + 4√2</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-text">Simplify each: <span class="math">√32 = 4√2</span>, <span class="math">√72 = 6√2</span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text">Rewrite: <span class="math">−2(4√2) + 6√2 + 4√2</span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text">Combine: <span class="math">−8√2 + 6√2 + 4√2 = 2√2</span> ✓</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="topic-badge">Worked example — Problem 5</div>
+      <h2>Multiply (√3 + 2)(−2√3 + 4) using FOIL</h2>
+      <div class="warn">Key fact: √a · √a = a. The radical completely disappears!</div>
+      <div class="math-block">F:  √3 · (−2√3) = −2 · 3 = −6
+O:  √3 · 4 = 4√3
+I:  2 · (−2√3) = −4√3
+L:  2 · 4 = 8
+
+= −6 + 4√3 − 4√3 + 8
+= −6 + 0 + 8
+= 2  ✓</div>
+      <div class="good">The middle terms cancelled out perfectly — that happens a lot with conjugate pairs.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div id="rationalize" class="section">
+    <div class="card">
+      <div class="topic-badge">Concept</div>
+      <h2>Why rationalize the denominator?</h2>
+      <p>In math, leaving a radical in the denominator (bottom of a fraction) is considered unfinished. We multiply by a clever form of 1 to remove it without changing the value.</p>
+    </div>
+    <div class="card">
+      <div class="topic-badge">Worked example — Problem 3</div>
+      <h2>Simplify √50 / (2√27)</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-text">Simplify numerator and denominator first: <span class="math">√50 = 5√2</span>, <span class="math">2√27 = 6√3</span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text">Multiply by <span class="math">√3/√3</span> to clear the denominator:
+          <div class="math-block">5√2   ·  √3    =   5√6
+6√3      √3        6 · 3
+
+= 5√6 / 18  ✓</div>
+        </div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="topic-badge">Worked example — Problem 6</div>
+      <h2>Simplify 2 / (3 − √2) — use the conjugate</h2>
+      <p>When there's a binomial in the denominator (two terms, one with a radical), multiply by the <strong>conjugate</strong> — same terms but the middle sign flips.</p>
+      <div class="rule">Conjugate of (3 − √2) is (3 + √2).<br>This uses: (a − b)(a + b) = a² − b²  →  the radical disappears!</div>
+      <div class="math-block"> 2        ·   (3 + √2)   =   2(3 + √2)
+(3 − √2)    (3 + √2)       9 − 2
+
+=  6 + 2√2   ✓
+      7</div>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div id="equations" class="section">
+    <div class="card">
+      <div class="topic-badge">Concept</div>
+      <h2>Three steps for every radical equation</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Isolate</strong> — get the radical alone on one side</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Square both sides</strong> — this removes the √</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Check every answer</strong> — squaring can create fake answers called extraneous solutions</div></div>
+      </div>
+      <div class="warn">An extraneous solution is one that makes the original equation false when you plug it back in. Always check!</div>
+    </div>
+    <div class="card">
+      <div class="topic-badge">Worked example — Problem 7</div>
+      <h2>Solve 3 + 2√(5x + 1) = 11</h2>
+      <div class="math-block">Step 1 — subtract 3:   2√(5x+1) = 8
+Step 1b — divide by 2:   √(5x+1) = 4
+Step 2 — square both sides:   5x+1 = 16
+Step 3 — solve:   5x = 15  →  x = 3
+
+Check: 3 + 2√(5·3+1) = 3 + 2√16 = 3 + 8 = 11 ✓</div>
+    </div>
+    <div class="card">
+      <div class="topic-badge">Worked example — Problem 8</div>
+      <h2>Solve √(x + 2) = 2x + 1</h2>
+      <p>This one gives a quadratic after squaring — two solutions to check!</p>
+      <div class="math-block">Square both sides:   x + 2 = (2x+1)²
+                               = 4x² + 4x + 1
+Rearrange:   0 = 4x² + 3x − 1
+Factor:   (4x − 1)(x + 1) = 0
+Solutions:   x = 1/4  or  x = −1</div>
+      <div class="warn">Must check both!</div>
+      <div class="math-block">Check x = 1/4:
+  √(1/4 + 2) = √(9/4) = 3/2
+  2(1/4) + 1 = 3/2  ✓  Valid!
+
+Check x = −1:
+  √(−1 + 2) = √1 = 1
+  2(−1) + 1 = −1  ✗  Extraneous!
+
+Answer: x = 1/4 only</div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div id="distance" class="section">
+    <div class="card">
+      <div class="topic-badge">Concept</div>
+      <h2>The distance formula</h2>
+      <div class="rule">d = √[ (x₂ − x₁)² + (y₂ − y₁)² ]</div>
+      <p>This is the Pythagorean theorem in disguise. The horizontal gap (x₂−x₁) and vertical gap (y₂−y₁) are the two legs. The distance d is the hypotenuse.</p>
+      <div class="warn">Leave your answer as an exact radical — do not round! The test says "leave exact."</div>
+    </div>
+    <div class="card">
+      <div class="topic-badge">Worked example — Problem 9</div>
+      <h2>Distance between (−3, 0) and (−5, 3)</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-text">Label the points: x₁ = −3, y₁ = 0, x₂ = −5, y₂ = 3</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text">Find the differences: <span class="math">x₂ − x₁ = −5 − (−3) = −2</span> and <span class="math">y₂ − y₁ = 3 − 0 = 3</span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text">Plug in: <span class="math">d = √((-2)² + 3²) = √(4 + 9) = √13</span> ✓</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="topic-badge">Worked example — Problem 10</div>
+      <h2>Find missing coordinate: (n, −6) and (−1, 2), d = 10</h2>
+      <div class="math-block">10 = √[(−1 − n)² + (2 − (−6))²]
+10 = √[(−1 − n)² + 64]
+Square both sides:
+100 = (−1 − n)² + 64
+36 = (−1 − n)²
+±6 = −1 − n
+
+Case 1: +6 = −1 − n  →  n = −7
+Case 2: −6 = −1 − n  →  n = 5
+
+Answer: n = −7  or  n = 5  ✓</div>
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div id="pythagorean" class="section">
+    <div class="card">
+      <div class="topic-badge">Concept</div>
+      <h2>Pythagorean theorem</h2>
+      <div class="rule">a² + b² = c²<br>where c is always the longest side (the hypotenuse)</div>
+      <p>Use it to: find a missing side, check if a triangle is a right triangle, or set up a word problem equation.</p>
+    </div>
+    <div class="card">
+      <div class="topic-badge">Worked examples — Problems 12 &amp; 13</div>
+      <h2>Is it a right triangle?</h2>
+      <div class="two-col">
+        <div>
+          <p><strong>Sides 6, 8, 10</strong></p>
+          <div class="math-block">6² + 8²  vs  10²
+36 + 64  vs  100
+100 = 100 ✓ Yes!</div>
+        </div>
+        <div>
+          <p><strong>Sides 10, 24, 26</strong></p>
+          <div class="math-block">10² + 24²  vs  26²
+100 + 576  vs  676
+676 = 676 ✓ Yes!</div>
+        </div>
+      </div>
+      <div class="warn">Always put the largest number as c (the hypotenuse). If you mix it up you'll get the wrong answer.</div>
+    </div>
+    <div class="card">
+      <div class="topic-badge">Worked example — Problem 11</div>
+      <h2>Word problem: one leg is 4 longer, hypotenuse = √58</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-text">Name the legs: shorter = x, longer = x + 4</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-text">Set up equation: <span class="math">x² + (x+4)² = (√58)² = 58</span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-text">Expand: <span class="math">x² + x² + 8x + 16 = 58</span></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-text">Simplify: <span class="math">2x² + 8x − 42 = 0</span>, divide by 2: <span class="math">x² + 4x − 21 = 0</span></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-text">Factor: <span class="math">(x + 7)(x − 3) = 0</span> → x = 3 (reject x = −7, can't have negative length)</div></div>
+        <div class="step"><div class="step-num">6</div><div class="step-text">Legs are <strong>3 and 7</strong>. Check: 3² + 7² = 9 + 49 = 58 = (√58)² ✓</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div id="graphing" class="section">
+    <div class="card">
+      <div class="topic-badge">Concept</div>
+      <h2>Graphing y = √(x − h) + k</h2>
+      <p>Start with the parent function y = √x, then shift it using h and k.</p>
+      <div class="rule">
+        h → moves the graph LEFT or RIGHT (starting x-value)<br>
+        k → moves the graph UP or DOWN (starting y-value)<br><br>
+        Domain: x ≥ h &nbsp;&nbsp;&nbsp; Range: y ≥ k
+      </div>
+      <div class="warn">Sign trick: (x − h) shifts RIGHT. (x + 2) would actually shift LEFT 2, because h = −2.</div>
+    </div>
+
+    <div class="card">
+      <div class="topic-badge">Interactive — drag the sliders</div>
+      <h2>Explore y = √(x − h) + k</h2>
+      <div class="slider-row">
+        <div class="slider-group">
+          <label>h (horizontal shift)</label>
+          <div style="display:flex;align-items:center;gap:10px">
+            <input type="range" id="hVal" min="-6" max="6" value="2" step="1">
+            <span class="slider-val" id="hOut">2</span>
+          </div>
+        </div>
+        <div class="slider-group">
+          <label>k (vertical shift)</label>
+          <div style="display:flex;align-items:center;gap:10px">
+            <input type="range" id="kVal" min="-6" max="6" value="3" step="1">
+            <span class="slider-val" id="kOut">3</span>
+          </div>
+        </div>
+      </div>
+      <canvas id="gc" width="660" height="300"></canvas>
+      <div class="graph-info">
+        <div class="info-item"><div class="info-label">Function</div><div class="info-val" id="funcLabel">y = √(x − 2) + 3</div></div>
+        <div class="info-item"><div class="info-label">Starting point</div><div class="info-val" id="startPt">(2, 3)</div></div>
+        <div class="info-item"><div class="info-label">Domain</div><div class="info-val" id="domLabel">x ≥ 2</div></div>
+        <div class="info-item"><div class="info-label">Range</div><div class="info-val" id="ranLabel">y ≥ 3</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="topic-badge">Worked example — Problem 14</div>
+      <h2>y = √(x − 2) + 3 — full solution</h2>
+      <div class="two-col">
+        <div>
+          <p><strong>Identify h and k:</strong></p>
+          <div class="math-block">y = √(x − 2) + 3
+h = 2,  k = 3</div>
+          <p><strong>Fill in the info:</strong></p>
+          <div class="math-block">Horizontal shift: right 2
+Vertical shift:   up 3
+Starting point:   (2, 3)
+Domain:  x ≥ 2
+Range:   y ≥ 3</div>
+        </div>
+        <div>
+          <p><strong>Table of values:</strong></p>
+          <div class="math-block">x  |  y
+2  |  3   (start!)
+3  |  4
+6  |  5
+11 |  6</div>
+          <div class="good">Pick x-values that make the inside a perfect square: x=2 gives √0, x=3 gives √1, x=6 gives √4, x=11 gives √9.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'graphing') setTimeout(drawGraph, 60);
+}
+
+function drawGraph() {
+  const canvas = document.getElementById('gc');
+  if (!canvas) return;
+  canvas.width = Math.min(660, canvas.parentElement.clientWidth - 40);
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const h = parseInt(document.getElementById('hVal').value);
+  const k = parseInt(document.getElementById('kVal').value);
+
+  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const bg = isDark ? '#1e1e1c' : '#ffffff';
+  const textCol = isDark ? '#d0d0cc' : '#333';
+  const gridCol = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
+  const axisCol = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
+
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  const originX = W * 0.42;
+  const originY = H * 0.56;
+  const sc = 28;
+
+  const cx = x => originX + x * sc;
+  const cy = y => originY - y * sc;
+
+  ctx.strokeStyle = gridCol; ctx.lineWidth = 0.5;
+  for (let i = -12; i <= 12; i++) {
+    ctx.beginPath(); ctx.moveTo(cx(i), 0); ctx.lineTo(cx(i), H); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, cy(i)); ctx.lineTo(W, cy(i)); ctx.stroke();
+  }
+
+  ctx.strokeStyle = axisCol; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0, cy(0)); ctx.lineTo(W, cy(0)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx(0), 0); ctx.lineTo(cx(0), H); ctx.stroke();
+
+  ctx.fillStyle = textCol; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+  for (let i = -10; i <= 10; i++) {
+    if (i === 0) continue;
+    if (cx(i) > 5 && cx(i) < W - 5) ctx.fillText(i, cx(i), cy(0) + 14);
+  }
+  ctx.textAlign = 'right';
+  for (let i = -8; i <= 8; i++) {
+    if (i === 0) continue;
+    if (cy(i) > 5 && cy(i) < H - 5) ctx.fillText(i, cx(0) - 5, cy(i) + 4);
+  }
+
+  ctx.strokeStyle = '#1D9E75'; ctx.lineWidth = 2.5; ctx.beginPath();
+  let first = true;
+  for (let px = 0; px < W; px++) {
+    const x = (px - originX) / sc;
+    if (x < h) continue;
+    const y = Math.sqrt(x - h) + k;
+    const py = cy(y);
+    if (py < -10 || py > H + 10) { first = true; continue; }
+    if (first) { ctx.moveTo(px, py); first = false; } else { ctx.lineTo(px, py); }
+  }
+  ctx.stroke();
+
+  const spx = cx(h), spy = cy(k);
+  ctx.fillStyle = '#0F6E56';
+  ctx.beginPath(); ctx.arc(spx, spy, 5, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = textCol;
+  ctx.font = 'bold 12px monospace';
+  ctx.textAlign = 'left';
+  ctx.fillText(`(${h}, ${k})`, spx + 9, spy - 7);
+
+  const sign = v => v >= 0 ? `− ${v}` : `+ ${Math.abs(v)}`;
+  const kSign = v => v >= 0 ? `+ ${v}` : `− ${Math.abs(v)}`;
+  document.getElementById('funcLabel').textContent = `y = √(x ${sign(h)}) ${kSign(k)}`;
+  document.getElementById('startPt').textContent = `(${h}, ${k})`;
+  document.getElementById('domLabel').textContent = `x ≥ ${h}`;
+  document.getElementById('ranLabel').textContent = `y ≥ ${k}`;
+  document.getElementById('hOut').textContent = h;
+  document.getElementById('kOut').textContent = k;
+}
+
+document.getElementById('hVal').addEventListener('input', drawGraph);
+document.getElementById('kVal').addEventListener('input', drawGraph);
+window.addEventListener('resize', () => {
+  if (document.getElementById('graphing').classList.contains('active')) drawGraph();
+});
+</script>
+</body>
+</html>
