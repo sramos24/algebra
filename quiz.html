@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Algebra 1 — Chapter 10 Quiz</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #1a1a18; min-height: 100vh; }
+  .page { max-width: 740px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+
+  .site-nav {
+    display: flex; gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap;
+  }
+  .site-nav a {
+    font-size: 13px; font-weight: 500; padding: 7px 16px;
+    border-radius: 20px; text-decoration: none; transition: all 0.15s;
+    border: 1px solid #e2e0d8; color: #555; background: #fff;
+  }
+  .site-nav a.active { background: #E1F5EE; border-color: #1D9E75; color: #085041; }
+  .site-nav a:hover:not(.active) { border-color: #1D9E75; color: #0F6E56; }
+
+  header { margin-bottom: 1.5rem; }
+  header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  header p { font-size: 14px; color: #666; }
+
+  .progress-bar-wrap { background: #e2e0d8; border-radius: 10px; height: 6px; margin: 1rem 0; }
+  .progress-bar { background: #1D9E75; height: 6px; border-radius: 10px; transition: width 0.4s; width: 0%; }
+  .progress-label { font-size: 12px; color: #888; margin-bottom: 6px; }
+
+  .card {
+    background: #fff; border: 1px solid #e2e0d8;
+    border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1rem;
+  }
+
+  .q-number { font-size: 11px; font-weight: 600; color: #1D9E75; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .q-topic { display: inline-block; font-size: 11px; background: #E1F5EE; color: #085041; padding: 2px 10px; border-radius: 10px; margin-bottom: 10px; }
+  .q-text { font-size: 16px; font-weight: 500; line-height: 1.6; margin-bottom: 16px; }
+  .q-text .math { font-family: 'Courier New', monospace; font-size: 15px; }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    display: flex; align-items: center; gap: 12px;
+    border: 1px solid #e2e0d8; border-radius: 8px;
+    padding: 10px 14px; cursor: pointer; transition: all 0.15s;
+    font-size: 14px; font-family: 'Courier New', monospace;
+    background: #fff;
+  }
+  .option:hover:not(.locked) { border-color: #1D9E75; background: #f0fbf6; }
+  .option.selected { border-color: #1D9E75; background: #E1F5EE; }
+  .option.correct { border-color: #639922; background: #EAF3DE; color: #27500A; }
+  .option.wrong { border-color: #E24B4A; background: #FCEBEB; color: #791F1F; }
+  .option.reveal-correct { border-color: #639922; background: #EAF3DE; color: #27500A; }
+  .option.locked { cursor: default; }
+
+  .opt-letter {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    background: #f5f5f3; border: 1px solid #ccc;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; font-family: inherit;
+  }
+  .option.selected .opt-letter { background: #1D9E75; border-color: #1D9E75; color: #fff; }
+  .option.correct .opt-letter { background: #639922; border-color: #639922; color: #fff; }
+  .option.wrong .opt-letter { background: #E24B4A; border-color: #E24B4A; color: #fff; }
+  .option.reveal-correct .opt-letter { background: #639922; border-color: #639922; color: #fff; }
+
+  .feedback { display: none; margin-top: 12px; padding: 10px 14px; border-radius: 8px; font-size: 14px; line-height: 1.6; }
+  .feedback.correct { background: #EAF3DE; border-left: 3px solid #639922; color: #27500A; display: block; }
+  .feedback.wrong { background: #FCEBEB; border-left: 3px solid #E24B4A; color: #791F1F; display: block; }
+
+  .btn {
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    padding: 10px 22px; border-radius: 8px; cursor: pointer;
+    border: 1px solid #ccc; background: #fff; color: #333;
+    transition: all 0.15s; margin-top: 12px;
+  }
+  .btn:hover { background: #f0fbf6; border-color: #1D9E75; color: #0F6E56; }
+  .btn-primary { background: #1D9E75; border-color: #1D9E75; color: #fff; }
+  .btn-primary:hover { background: #0F6E56; border-color: #0F6E56; color: #fff; }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 1rem; }
+
+  /* Results */
+  #results { display: none; }
+  .score-circle {
+    width: 120px; height: 120px; border-radius: 50%;
+    border: 4px solid #1D9E75;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+  }
+  .score-num { font-size: 32px; font-weight: 700; color: #1D9E75; }
+  .score-denom { font-size: 14px; color: #888; }
+  .score-msg { text-align: center; font-size: 16px; font-weight: 500; margin-bottom: 1rem; }
+  .breakdown { margin: 1rem 0; }
+  .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 0.5px solid #e2e0d8; font-size: 14px; }
+  .breakdown-row:last-child { border-bottom: none; }
+  .chip { font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 10px; }
+  .chip-right { background: #EAF3DE; color: #27500A; }
+  .chip-wrong { background: #FCEBEB; color: #791F1F; }
+
+  /* Answer Key */
+  #answerKey { display: none; }
+  .ak-item { margin-bottom: 1rem; }
+  .ak-q { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .ak-answer { font-family: 'Courier New', monospace; font-size: 14px; background: #EAF3DE; color: #27500A; padding: 8px 12px; border-radius: 8px; margin-bottom: 6px; display: inline-block; }
+  .ak-explain { font-size: 13px; color: #555; line-height: 1.65; }
+  .ak-divider { border: none; border-top: 0.5px solid #e2e0d8; margin: 1rem 0; }
+
+  strong { font-weight: 600; }
+  .math { font-family: 'Courier New', monospace; }
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="site-nav">
+    <a href="index.html">📖 Study guide</a>
+    <a href="quiz.html" class="active">✏️ Take the quiz</a>
+  </nav>
+
+  <header>
+    <h1>Algebra 1 — Chapter 10 Quiz</h1>
+    <p>14 questions covering all Chapter 10 topics. Select an answer to check it instantly.</p>
+  </header>
+
+  <div class="progress-label" id="progressLabel">Question 0 of 14 answered</div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+  <div id="quizArea"></div>
+
+  <div class="btn-row" id="quizControls" style="display:none">
+    <button class="btn btn-primary" onclick="showResults()">See my score</button>
+    <button class="btn" onclick="toggleKey()">Show answer key</button>
+  </div>
+
+  <div id="results" class="card" style="margin-top:1rem">
+    <div class="score-circle"><span class="score-num" id="scoreNum">0</span><span class="score-denom" id="scoreDenom">/ 14</span></div>
+    <div class="score-msg" id="scoreMsg"></div>
+    <div class="breakdown" id="breakdownList"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="resetQuiz()">Try again</button>
+      <button class="btn" onclick="toggleKey()">Show answer key</button>
+    </div>
+  </div>
+
+  <div id="answerKey" style="margin-top:1rem">
+    <div class="card">
+      <div style="font-size:16px;font-weight:600;margin-bottom:1rem;color:#0F6E56">Answer Key &amp; Explanations</div>
+      <div id="akContent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    topic: "Simplifying radicals",
+    text: "Simplify: <span class='math'>3√(24x³)</span>",
+    options: ["<span class='math'>6x√(6x)</span>", "<span class='math'>3x√(8x)</span>", "<span class='math'>12x√(6x)</span>", "<span class='math'>6√(24x)</span>"],
+    answer: 0,
+    explain: "Factor: 24 = 4·6 and x³ = x²·x. Pull out: √4 = 2 and √x² = x. Then 3·2·x·√(6x) = 6x√(6x)."
+  },
+  {
+    topic: "Simplifying radicals",
+    text: "Simplify: <span class='math'>√(32a⁶b³)</span>",
+    options: ["<span class='math'>4a²b√(2b)</span>", "<span class='math'>4a³b√(2b)</span>", "<span class='math'>8a³b√b</span>", "<span class='math'>4a³b²√2</span>"],
+    answer: 1,
+    explain: "32 = 16·2 → √16 = 4. a⁶ = (a³)² → a³ comes out. b³ = b²·b → b comes out, one b stays inside. Result: 4a³b√(2b)."
+  },
+  {
+    topic: "Simplifying radicals",
+    text: "Simplify: <span class='math'>√(75)</span>",
+    options: ["<span class='math'>5√3</span>", "<span class='math'>15√5</span>", "<span class='math'>5√15</span>", "<span class='math'>25√3</span>"],
+    answer: 0,
+    explain: "75 = 25·3. √25 = 5. So √75 = 5√3."
+  },
+  {
+    topic: "Adding & subtracting radicals",
+    text: "Simplify: <span class='math'>−2√32 + √72 + 4√2</span>",
+    options: ["<span class='math'>4√2</span>", "<span class='math'>2√2</span>", "<span class='math'>−2√2</span>", "<span class='math'>6√2</span>"],
+    answer: 1,
+    explain: "√32 = 4√2, √72 = 6√2. So: −2(4√2) + 6√2 + 4√2 = −8√2 + 6√2 + 4√2 = 2√2."
+  },
+  {
+    topic: "Adding & subtracting radicals",
+    text: "Simplify: <span class='math'>3√12 − √27</span>",
+    options: ["<span class='math'>3√3</span>", "<span class='math'>√3</span>", "<span class='math'>6√3 − 3√3</span>", "<span class='math'>2√3</span>"],
+    answer: 0,
+    explain: "√12 = 2√3, √27 = 3√3. So 3(2√3) − 3√3 = 6√3 − 3√3 = 3√3."
+  },
+  {
+    topic: "Multiplying radicals",
+    text: "Multiply using FOIL: <span class='math'>(√3 + 2)(−2√3 + 4)</span>",
+    options: ["<span class='math'>8</span>", "<span class='math'>2</span>", "<span class='math'>−6 + 4√3</span>", "<span class='math'>−2</span>"],
+    answer: 1,
+    explain: "F: √3·(−2√3) = −6. O: √3·4 = 4√3. I: 2·(−2√3) = −4√3. L: 2·4 = 8. Total: −6 + 4√3 − 4√3 + 8 = 2. The middle terms cancel!"
+  },
+  {
+    topic: "Rationalizing the denominator",
+    text: "Rationalize and simplify: <span class='math'>√50 / (2√27)</span>",
+    options: ["<span class='math'>5√6/18</span>", "<span class='math'>5√6/6</span>", "<span class='math'>√6/18</span>", "<span class='math'>5/18</span>"],
+    answer: 0,
+    explain: "Simplify first: √50 = 5√2, 2√27 = 6√3. Then multiply by √3/√3: (5√2·√3)/(6√3·√3) = 5√6/18."
+  },
+  {
+    topic: "Rationalizing the denominator",
+    text: "Rationalize: <span class='math'>2 / (3 − √2)</span>",
+    options: ["<span class='math'>(6 − 2√2)/7</span>", "<span class='math'>(6 + 2√2)/7</span>", "<span class='math'>(6 + 2√2)/11</span>", "<span class='math'>2/(3 + √2)</span>"],
+    answer: 1,
+    explain: "Multiply by the conjugate (3 + √2)/(3 + √2). Numerator: 2(3 + √2) = 6 + 2√2. Denominator: 9 − 2 = 7. Answer: (6 + 2√2)/7."
+  },
+  {
+    topic: "Radical equations",
+    text: "Solve: <span class='math'>3 + 2√(5x + 1) = 11</span>",
+    options: ["<span class='math'>x = 1</span>", "<span class='math'>x = 5</span>", "<span class='math'>x = 3</span>", "<span class='math'>x = 2</span>"],
+    answer: 2,
+    explain: "Subtract 3 → 2√(5x+1) = 8. Divide by 2 → √(5x+1) = 4. Square → 5x+1 = 16 → 5x = 15 → x = 3. Check: 3 + 2√16 = 3 + 8 = 11 ✓"
+  },
+  {
+    topic: "Radical equations",
+    text: "Solve: <span class='math'>√(x + 2) = 2x + 1</span>. Which is the valid solution?",
+    options: ["<span class='math'>x = −1</span>", "<span class='math'>x = 1/4</span>", "Both <span class='math'>x = −1</span> and <span class='math'>x = 1/4</span>", "<span class='math'>x = 1/2</span>"],
+    answer: 1,
+    explain: "Squaring gives 4x²+3x−1=0, so (4x−1)(x+1)=0 → x=1/4 or x=−1. Check x=−1: √1=1 but 2(−1)+1=−1. Doesn't match — extraneous! Only x=1/4 is valid."
+  },
+  {
+    topic: "Distance formula",
+    text: "Find the exact distance between <span class='math'>(−3, 0)</span> and <span class='math'>(−5, 3)</span>.",
+    options: ["<span class='math'>√7</span>", "<span class='math'>√13</span>", "<span class='math'>5</span>", "<span class='math'>√11</span>"],
+    answer: 1,
+    explain: "d = √[(−5−(−3))² + (3−0)²] = √[(−2)² + 3²] = √[4 + 9] = √13."
+  },
+  {
+    topic: "Distance formula",
+    text: "Points <span class='math'>(n, −6)</span> and <span class='math'>(−1, 2)</span> are 10 units apart. Find all possible values of n.",
+    options: ["<span class='math'>n = 5</span> only", "<span class='math'>n = −7</span> only", "<span class='math'>n = −7</span> or <span class='math'>n = 5</span>", "<span class='math'>n = 7</span> or <span class='math'>n = −5</span>"],
+    answer: 2,
+    explain: "Set up: 10 = √[(−1−n)² + 64]. Square: 100 = (−1−n)² + 64 → 36 = (−1−n)². So ±6 = −1−n → n = −7 or n = 5."
+  },
+  {
+    topic: "Pythagorean theorem",
+    text: "A right triangle has legs x and (x + 4) and hypotenuse √58. What are the leg lengths?",
+    options: ["2 and 6", "3 and 7", "4 and 8", "5 and 9"],
+    answer: 1,
+    explain: "x² + (x+4)² = 58 → 2x² + 8x + 16 = 58 → x² + 4x − 21 = 0 → (x+7)(x−3) = 0 → x = 3. Legs are 3 and 7. Check: 9 + 49 = 58 ✓"
+  },
+  {
+    topic: "Graphing √ functions",
+    text: "For <span class='math'>y = √(x − 2) + 3</span>, which of the following is correct?",
+    options: [
+      "Domain: x ≥ −2, Range: y ≥ 3",
+      "Domain: x ≥ 2, Range: y ≥ −3",
+      "Domain: x ≥ 2, Range: y ≥ 3",
+      "Domain: x ≥ 3, Range: y ≥ 2"
+    ],
+    answer: 2,
+    explain: "h = 2, k = 3. The graph starts at (2, 3) — you can't take the square root of a negative number, so x must be ≥ 2. The smallest output is 3 (when x = 2), so y ≥ 3."
+  }
+];
+
+const userAnswers = new Array(questions.length).fill(null);
+let answered = 0;
+let keyVisible = false;
+
+function buildQuiz() {
+  const area = document.getElementById('quizArea');
+  area.innerHTML = '';
+  questions.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = 'q' + i;
+
+    const letters = ['A', 'B', 'C', 'D'];
+    const opts = q.options.map((o, j) => `
+      <div class="option" id="opt_${i}_${j}" onclick="selectOption(${i}, ${j})">
+        <span class="opt-letter">${letters[j]}</span>
+        <span>${o}</span>
+      </div>
+    `).join('');
+
+    card.innerHTML = `
+      <div class="q-number">Question ${i + 1} of ${questions.length}</div>
+      <div class="q-topic">${q.topic}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="options">${opts}</div>
+      <div class="feedback" id="fb_${i}"></div>
+    `;
+    area.appendChild(card);
+  });
+}
+
+function selectOption(qi, oi) {
+  if (userAnswers[qi] !== null) return;
+
+  userAnswers[qi] = oi;
+  answered++;
+
+  const q = questions[qi];
+  const correct = oi === q.answer;
+  const letters = ['A', 'B', 'C', 'D'];
+
+  for (let j = 0; j < q.options.length; j++) {
+    const el = document.getElementById(`opt_${qi}_${j}`);
+    el.classList.add('locked');
+    if (j === oi && correct) el.classList.add('correct');
+    else if (j === oi && !correct) el.classList.add('wrong');
+    else if (j === q.answer && !correct) el.classList.add('reveal-correct');
+  }
+
+  const fb = document.getElementById('fb_' + qi);
+  fb.className = 'feedback ' + (correct ? 'correct' : 'wrong');
+  fb.innerHTML = correct
+    ? `<strong>Correct!</strong> ${q.explain}`
+    : `<strong>Not quite.</strong> The correct answer is <strong>${letters[q.answer]}</strong>. ${q.explain}`;
+
+  updateProgress();
+
+  if (answered === questions.length) {
+    document.getElementById('quizControls').style.display = 'flex';
+    document.getElementById('quizControls').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function updateProgress() {
+  const pct = Math.round((answered / questions.length) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Question ${answered} of ${questions.length} answered`;
+}
+
+function showResults() {
+  const correct = userAnswers.filter((a, i) => a === questions[i].answer).length;
+  document.getElementById('scoreNum').textContent = correct;
+  document.getElementById('scoreDenom').textContent = '/ ' + questions.length;
+
+  let msg = '';
+  const pct = correct / questions.length;
+  if (pct === 1) msg = 'Perfect score! You\'re ready for the test! 🎉';
+  else if (pct >= 0.85) msg = 'Almost perfect — review the ones you missed.';
+  else if (pct >= 0.7) msg = 'Good effort! A little more review and you\'ve got this.';
+  else if (pct >= 0.5) msg = 'Keep studying — focus on the topics you missed.';
+  else msg = 'Don\'t give up! Review the study guide and try again.';
+  document.getElementById('scoreMsg').textContent = msg;
+
+  const breakdown = document.getElementById('breakdownList');
+  breakdown.innerHTML = '<div style="font-size:13px;font-weight:600;color:#888;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em">Question by question</div>';
+  questions.forEach((q, i) => {
+    const isRight = userAnswers[i] === q.answer;
+    const letters = ['A', 'B', 'C', 'D'];
+    const yourAns = userAnswers[i] !== null ? letters[userAnswers[i]] : '—';
+    breakdown.innerHTML += `
+      <div class="breakdown-row">
+        <span><strong>Q${i + 1}</strong> — ${q.topic}</span>
+        <span class="chip ${isRight ? 'chip-right' : 'chip-wrong'}">${isRight ? '✓ Correct' : '✗ ' + yourAns + ', ans: ' + letters[q.answer]}</span>
+      </div>
+    `;
+  });
+
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function toggleKey() {
+  keyVisible = !keyVisible;
+  const keyEl = document.getElementById('answerKey');
+  if (keyVisible) {
+    buildAnswerKey();
+    keyEl.style.display = 'block';
+    keyEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    keyEl.style.display = 'none';
+  }
+  document.querySelectorAll('.btn').forEach(b => {
+    if (b.textContent.includes('answer key') || b.textContent.includes('Answer key')) {
+      b.textContent = keyVisible ? 'Hide answer key' : 'Show answer key';
+    }
+  });
+}
+
+function buildAnswerKey() {
+  const letters = ['A', 'B', 'C', 'D'];
+  const content = document.getElementById('akContent');
+  content.innerHTML = questions.map((q, i) => `
+    <div class="ak-item">
+      <div class="ak-q">Q${i + 1}: ${q.topic} — ${q.text}</div>
+      <div><span class="ak-answer">${letters[q.answer]}: ${q.options[q.answer]}</span></div>
+      <div class="ak-explain">${q.explain}</div>
+      ${i < questions.length - 1 ? '<hr class="ak-divider">' : ''}
+    </div>
+  `).join('');
+}
+
+function resetQuiz() {
+  userAnswers.fill(null);
+  answered = 0;
+  keyVisible = false;
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('answerKey').style.display = 'none';
+  document.getElementById('quizControls').style.display = 'none';
+  updateProgress();
+  buildQuiz();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
